@@ -1,0 +1,120 @@
+body {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: #eef3f9;
+  }
+
+  b1{
+    font-size: 80px;
+    color: #eef3f9;
+    text-align:center;
+  }
+  
+  h1 {
+    color: #333;
+    text-align: center;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .background {
+    background-color: #537692;
+    max-width: 100%;
+    height: 250px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .topnav {
+    overflow: hidden;
+    background-color: #b3cde4;
+  }
+  
+  .topnav a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  .contact-box {
+    display: none; /* Hidden by default */
+    position: fixed; /* Position fixed so it stays in place */
+    top: 20%; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensures it appears above other content */
+}
+
+.contact-box button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Basic styling for links */
+.topnav a {
+    text-decoration: none;
+    color: #000;
+    padding: 14px 20px;
+    display: inline-block;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+}
+
+.login-signup-box {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  width: 500px;
+  transform: translateX(-50%);
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.login-signup-box input {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-signup-box button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.validation-message {
+  color: red; /* Red text for error messages */
+  font-size: 14px; /* Font size for messages */
+  margin-top: 5px; /* Space above the messages */
+}
+
+
+
+
+  
