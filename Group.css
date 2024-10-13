@@ -30,11 +30,19 @@ body {
     border-radius: 10px;
   }
 
+
+.background h1 {
+    margin-top: 100px; /* Adjust this value as needed */
+    color: #fff;
+    font-size: 48px;
+}
+
   .topnav {
     overflow: hidden;
     background-color: #b3cde4;
   }
   
+
   .topnav a {
     float: left;
     display: block;
@@ -136,13 +144,14 @@ body {
 }
 
 
+/*/ Search Bar /*/
 .topnav input[type="text"] {
   width: 50%;
   padding: 10px;
   margin: 10px auto;
   display: block;
-  border-radius: 5px; /* Make sure this line ends with a semicolon */
-  font-size: 16px; /* Make sure this line ends with a semicolon */
+  border-radius: 5px; 
+  font-size: 16px;
   border: 1px solid #ccc;
 }
 
