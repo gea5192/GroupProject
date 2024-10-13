@@ -1,190 +1,67 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <div class='background'>
-        <b1> Nittany Shop </b1> 
-    </div>
-    <div class="topnav">
-      <a class="active" href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#contact" id="contact-link">Contact</a>
-      <a href="#" id="login-signup-link">Login/Signup</a>
-      <input type="text" placeholder="Search..">
-    </div>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nittany Shop | THE place to go for PSU gear</title>
     <link rel="stylesheet" type="text/css" href="Group.css">
-  </head>
-  <body>
+</head>
+
+<body>
+    <header class='background'>
+        <h1> Nittany Shop </h1>
+    </header>
+    <nav class="topnav">
+        <a class="active" href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact" id="contact-link">Contact</a>
+        <a href="#" id="login-signup-link">Login/Signup</a>
+        <input type="text" placeholder="Search.." aria-label="Search">
+    </nav>
     <!-- Main Section -->
-      <main>
+    <main>
         <section id="welcome-station">
             <h2>Welcome to Nittany Shop!</h2>
             <p>Explore our plethora of products and services</p>
         </section>
 
         <!-- About Section -->
-         <section id="about">
+        <section id="about">
             <h3>About Nittany Shop</h3>
             <p>We provide the best products State College has to offer!</p>
             <p>Established in 2024, we have become a staple to the town.</p>
-         </section> 
+        </section>
 
         <!-- Products/Pictures Section -->
-         <section id="products">
+        <section id="products">
             <h3>Featured Products</h3>
             <div class="product-gallery">
-                <img src="https://images.nittanyweb.com/scs/images/products/15/larger/penn_state_crew_neck_sweatshirt_arching_over_lion_navy_nittany_lions_psu_p5376.jpg" alt="Product 1" class ="product-img">
-                <img src="https://images.footballfanatics.com/penn-state-nittany-lions/tervis-penn-state-nittany-lions-20oz-personalized-mvp-fan-stainless-steel-tumbler_ss5_p-200071861+pv-1+u-rqdydixc0azgf3rgrs3b+v-guatcihwausutf8pvcuh.jpg?_hv=2&w=900" alt="Product 2" class ="product-img">
-                <img src="https://images.nittanyweb.com/scs/images/products/15/larger/penn_state_nittany_lions_football_hooded_sweatshirt_white_nittany_lions_psu_p10594.jpg" alt="Product 3" class ="product-img">
+                <img src="https://images.nittanyweb.com/scs/images/products/15/larger/penn_state_crew_neck_sweatshirt_arching_over_lion_navy_nittany_lions_psu_p5376.jpg"
+                    alt="Penn State Crew Neck Sweatshirt" class="product-img">
+                <img src="https://images.footballfanatics.com/penn-state-nittany-lions/tervis-penn-state-nittany-lions-20oz-personalized-mvp-fan-stainless-steel-tumbler_ss5_p-200071861+pv-1+u-rqdydixc0azgf3rgrs3b+v-guatcihwausutf8pvcuh.jpg?_hv=2&w=900"
+                    alt="Penn State Stainless Steel Tumbler" class="product-img">
+                <img src="https://images.nittanyweb.com/scs/images/products/15/larger/penn_state_nittany_lions_football_hooded_sweatshirt_white_nittany_lions_psu_p10594.jpg"
+                    alt="Penn State Football Hooded Sweatshirt" class="product-img">
             </div>
-          </section>
+        </section>
 
         <!-- More Information Section -->
-         <section id="more-info">
+        <section id="more-info">
             <h3>More Information</h3>
             <p>For any questions or issues, please contact us via the "Contact" link in the menu.</p>
-         </section>
-      </main>
+        </section>
+    </main>
 
-      <!-- Footer -->
-       <footer>
+    <!-- Footer -->
+    <footer>
         <p>&copy; 2024 Nittany Shop. All rights reserved.</p>
-       </footer>
+    </footer>
 
     <script>
-       // Function to create and show the contact box
-       function showContactBox() {
-            const contactBox = document.createElement('div');
-            contactBox.className = 'contact-box';
-            contactBox.innerHTML = `
-                <p>Phone: (123) 456-7890</p>
-                <p>Email: NittanyStore@gmail.com</p>
-                <button id="close-btn">Close</button>
-            `;
-            document.body.appendChild(contactBox);
-            document.getElementById('close-btn').addEventListener('click', function() {
-                contactBox.style.display = 'none';
-            });
-            contactBox.style.display = 'block';
-        }
-
-        // Function to create and show the login/signup feature
-        function showLoginSignupBox() {
-            const loginSignupBox = document.createElement('div');
-            loginSignupBox.className = 'login-signup-box';
-            loginSignupBox.innerHTML = `
-                <div id="login-form">
-                    <h2>Login</h2>
-                    <div class="validation-message" id="login-validation"></div>
-                    <input type="text" placeholder="Username" id="username"><br>
-                    <input type="password" placeholder="Password" id="password"><br>
-                    <a href="#">Forgot Password?</a>
-                    <button id="login-btn">Login</button>
-                    <button id="show-signup-btn">Sign Up</button>
-                </div>
-                <div id="signup-form" style="display:none;">
-                    <h2>Sign Up</h2>
-                    <div class="validation-message" id="signup-validation"></div>
-                    <input type="name" placeholder="Name" id="signup-name"><br>
-                    <input type="email" placeholder="Email" id="signup-email"><br>
-                    <input type="age" placeholder="Age" id="signup-age"><br>
-                    <input type="address" placeholder="Address" id="signup-address"><br>
-                    <input type="phone" placeholder="Phone Number" id="signup-phone"><br>
-                    <input type="password" placeholder="New Password" id="signup-password"><br>
-                    <input type="password" placeholder="Confirm Password" id="confirm-password"><br>
-                    <button id="signup-btn">Sign Up</button>
-                    <button id="close-login-btn">Close</button>
-                </div>
-            `;
-            document.body.appendChild(loginSignupBox);
-
-            document.getElementById('close-login-btn').addEventListener('click', function() {
-                loginSignupBox.style.display = 'none';
-            });
-
-            document.getElementById('show-signup-btn').addEventListener('click', function() {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('signup-form').style.display = 'block';
-            });
-
-            document.getElementById('signup-btn').addEventListener('click', validateSignup);
-            document.getElementById('login-btn').addEventListener('click', validateLogin);
-
-            loginSignupBox.style.display = 'block';
-        }
-
-        // Function for validating signup from inputs
-        function validateSignup() {
-            const name = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
-            const age = document.getElementById('signup-age').value;
-            const phone = document.getElementById('signup-phone').value;
-            const address = document.getElementById('signup-address').value;
-            const password = document.getElementById('signup-password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const validationMessage = document.getElementById('signup-validation');
-            validationMessage.innerHTML = ''; // Clear previous message
-
-            let messages = []; // Array to hold error messages
-            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/; // Simple email regex
-
-            // Validate email format
-            if (!email.match(emailPattern)) {
-                messages.push("Please enter a valid email");
-            }
-
-            // Validate password length
-            if (password.length < 6) {
-                messages.push("Password must be at least 6 characters.");
-            }
-
-            // Validate password confirmation
-            if (password !== confirmPassword) {
-                messages.push("Passwords do not match");
-            }
-
-            // Display validation messages or success message
-            if (messages.length > 0) {
-                validationMessage.innerHTML = messages.join('<br>');
-            } else {
-                validationMessage.innerHTML = "Signup successful!";
-            }
-        }
-
-        // Function to validate login form
-        function validateLogin() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const validationMessage = document.getElementById('login-validation');
-            validationMessage.innerHTML = ''; // Clear previous message
-
-            let messages = []; // Array to hold error messages
-            const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/; // Simple email regex
-
-            // Validate email format
-            if (!username.match(emailPattern)) {
-                messages.push("Please enter a valid email");
-            }
-
-            // Check if both fields are filled
-            if (!username || !password) {
-                validationMessage.innerHTML = "Please fill out both fields";
-            } else {
-                validationMessage.innerHTML = "Login successful!";
-            }
-        }
-
-        // Add event listener to the contact link
-        document.getElementById('contact-link').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default link behavior
-            showContactBox(); // Show the contact box 
-        });
-
-        // Add event listener to the login-signup link
-        document.getElementById('login-signup-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            showLoginSignupBox();
-        });
+       
     </script>
 
-  </body>
+</body>
+
 </html>
