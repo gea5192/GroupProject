@@ -124,6 +124,20 @@
             }
         }
 
+        // Function to collect shopper data and convert it into a JSON object
+        function collectShopperData(name, email, age, phone, address) {
+          const shopper = {
+             name: name,
+             email: email,
+             age: age,
+             phone: phone,
+             address: address
+        };
+
+        // Convert shopper data to JSON
+       const shopperDataJSON = JSON.stringify(shopper);
+       console.log("Shopper data collected:", shopperDataJSON);
+
         // Add event listener to the contact link
         document.getElementById('contact-link').addEventListener('click', function (event) {
             event.preventDefault(); // Prevent default link behavior
