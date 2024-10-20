@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management | Nittany Shop</title>
+    <link rel="stylesheet" type="text/css" href="Group.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <header class='background'>
+        <h1>Product Management</h1>
+    </header>
+
+    <main class="container mt-5">
+        <h2>Add or Update Product</h2>
+        <form id="product-form">
+            <div class="form-group">
+                <label for="productId">Product ID <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="productId" required>
+            </div>
+            <div class="form-group">
+                <label for="productDescription">Product Description <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="productDescription" required>
+            </div>
+            <div class="form-group">
+                <label for="productCategory">Product Category <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="productCategory" required>
+            </div>
+            <div class="form-group">
+                <label for="productUOM">Unit of Measure <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="productUOM" required>
+            </div>
+            <div class="form-group">
+                <label for="productPrice">Price <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" id="productPrice" required>
+            </div>
+            <div class="form-group">
+                <label for="productWeight">Weight (optional)</label>
+                <input type="number" class="form-control" id="productWeight">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <div id="validation-message" class="validation-message"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Nittany Shop. All rights reserved.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="Group.js"></script>
+</body>
+
+</html>
