@@ -4,7 +4,7 @@ var products = [
 price: 47.99, weight: 1.2 },
 { id: 2, name: "Penn State Stainless Steel Tumbler", description: "Durable tumbler", category: "Accessories", uom:
 "Piece", price: 25.99, weight: 0.5 },
-{ id: 3, name: "Penn State Football Hooded Sweatshirt", description: "Football Hoodie", category: "Clothing", uom:
+{ id: 3, name: "Penn State Football Hooded Sweatshirt", description: "PSU Football Hoodie", category: "Clothing", uom:
 "Piece", price: 62.99, weight: 1.4 }
 ];
 // Function to display product list
