@@ -5,21 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management | Nittany Shop</title>
-    <!-- Link to existing stylesheet for consistent styles -->
     <link rel="stylesheet" type="text/css" href="Group.css">
-    <!-- Bootstrap for layout support -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="background">
-        <h1 class="font-weight-bold border border-dark p-3 text-center">Nittany Shop</h1>
+    <header class='background'>
+        <h1>Add Product/Product Management</h1>
     </header>
 
     <!-- Navigation -->
     <nav class="topnav">
-        <a class="active" href="#home">Home</a>
+        <a class="active" href="Group.html">Home</a>
         <a href="#about">About</a>
         <a href="product-management.html">Add Products</a>
         <a href="#contact" id="contact-link">Contact</a>
@@ -27,9 +25,8 @@
         <input type="text" placeholder="Search.." aria-label="Search">
     </nav>
 
-    <!-- Main Content -->
     <main class="container mt-5">
-        <h2 class="text-center">Add or Update Product</h2>
+        <h2>Add or Update Product</h2>
         <form id="product-form">
             <div class="form-group">
                 <label for="productId">Product ID <span class="text-danger">*</span></label>
@@ -58,31 +55,25 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
-        <div id="validation-message" class="validation-message mt-3"></div>
+        <div id="validation-message" class="validation-message"></div>
 
         <!-- Back to Main Shop Button -->
         <button id="back-to-shop" class="btn btn-secondary mt-3">Back to Main Shop</button>
     </main>
 
-    <!-- Footer -->
     <footer>
-        <p class="text-center">&copy; 2024 Nittany Shop. All rights reserved.</p>
+        <p>&copy; 2024 Nittany Shop. All rights reserved.</p>
     </footer>
 
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="Group.js"></script>
 
     <!-- JavaScript to go back to the main shop -->
     <script>
-        document.getElementById("back-to-shop").addEventListener("click", function () {
+        document.getElementById("back-to-shop").addEventListener("click", function() {
             window.location.href = "group.html"; 
         });
     </script>
-
 </body>
-
-</html>
-
 
 </html>
