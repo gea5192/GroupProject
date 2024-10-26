@@ -7,6 +7,7 @@
     <title>Product Management | Nittany Shop</title>
     <link rel="stylesheet" type="text/css" href="Group.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="Group.html"></script>
 
 </head>
 
@@ -70,6 +71,15 @@
     <script>
         document.getElementById("back-to-shop").addEventListener("click", function () {
             window.location.href = "group.html";
+        });
+
+        document.getElementById('login-signup-link').addEventListener('click', function(){
+            showLoginSignupBox();
+        });
+
+        document.getElementById('contact-link').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            showContactBox(); // Show the contact box 
         });
     </script>
 </body>
