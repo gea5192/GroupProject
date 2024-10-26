@@ -64,6 +64,15 @@
 
     <script>
 
+        document.getElementById('login-signup-link').addEventListener('click', function(){
+            showLoginSignupBox();
+        });
+
+        document.getElementById('contact-link').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            showContactBox(); // Show the contact box 
+        });
+
         var products = [
             { id: 1, name: "Penn State Crew Neck Sweatshirt", description: "Cozy sweatshirt", price: 47.99 },
             { id: 2, name: "Penn State Stainless Steel Tumbler", description: "Durable tumbler", price: 25.99 },
