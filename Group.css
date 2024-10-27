@@ -264,4 +264,14 @@ footer p {
   background-color: #5a6268; 
 }
 
+.topnav a:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.login-signup-box button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
   
