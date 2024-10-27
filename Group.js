@@ -83,9 +83,19 @@ $(document).ready(function () {
         const productPrice = parseFloat($("#productPrice").val());
         const productWeight = parseFloat($("#productWeight").val()) || null; // Optional field
 
-        // Validate form
-        if (validateProductForm(productId, productDescription, productCategory, productUOM, productPrice)) {
-            addOrUpdateProduct(productId, productDescription, productCategory, productUOM, productPrice, productWeight);
+        // Validation messages array
+        let validationMessages = [];
+
+        // Validate required fields
+        if (!productId) validationMessages.push("Product ID is required.");
+        if (!productDescription) validationMessages.push("Product Description is required.");
+        if (!productCategory) validationMessages.push("Product Category is required.");
+        if (!productUOM) validationMessages.push("Unit of Measure is required.");
+        if (!productPrice || productPrice <= 0) validationMessages.push("Price must be greater than 0.");
+
+        // Validate weight if provided
+        if (productWeight && productWeight < 0) {
+            validationMessages.push("Weight cannot be negative.");
         }
     });
 
@@ -158,19 +168,19 @@ $(document).ready(function () {
         const password = document.getElementById('signup-password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
         const validationMessage = document.getElementById('signup-validation');
-        validationMessage.innerHTML = '';
-
-        let messages = [];
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-        // Validate email format
-        if (!email.match(emailPattern)) {
-            messages.push("Please enter a valid email");
-        }
-
-        // Validate password length and confirmation
+        validationMessage.innerHTML = ''; // Clear previous message
+    
+        let messages = []; // Array to hold error messages
+        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/; // Simple email regex
+    
+        // Validate fields
+        if (!name) messages.push("Name is required.");
+        if (!email.match(emailPattern)) messages.push("Please enter a valid email.");
+        if (!age || age < 0 || age > 120) messages.push("Please enter a valid age.");
+        if (!phone) messages.push("Phone number is required.");
+        if (!address) messages.push("Address is required.");
         if (password.length < 6) messages.push("Password must be at least 6 characters.");
-        if (password !== confirmPassword) messages.push("Passwords do not match");
+        if (password !== confirmPassword) messages.push("Passwords do not match.");
 
         // Display validation messages or success message
         if (messages.length > 0) {
