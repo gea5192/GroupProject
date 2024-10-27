@@ -84,6 +84,39 @@
 
         // Function to display cart items in the table
         function displayCart() {
+    $.ajax({
+        url: 'http://localhost:3000/cart',  // Replace with your actual API endpoint
+        method: 'GET',
+        success: function (cartItems) {
+            const cartItemsContainer = $('#cart-items');
+            cartItemsContainer.empty();
+            let total = 0;
+            cartItems.forEach(item => {
+                const row = `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.description}</td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td>
+                            <input type="number" value="${item.quantity}" min="1" class="update-quantity" data-id="${item.id}">
+                        </td>
+                        <td><button class="remove-btn btn btn-danger" data-id="${item.id}">Remove</button></td>
+                    </tr>
+                `;
+                cartItemsContainer.append(row);
+                total += item.price * item.quantity;
+            });
+            $('#total-amount').text(total.toFixed(2));
+        },
+        error: function (error) {
+            console.error('Error fetching cart items:', error);
+        }
+    });
+}
+
+
+/*/Old version
+        function displayCart() {
             const cartItems = $('#cart-items');
             cartItems.empty();
             let total = 0;
@@ -104,8 +137,29 @@
 
             $('#total-amount').text(total.toFixed(2));
         }
+/*/
 
         // Function to add product to the cart
+        function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        if (product) {
+        $.ajax({
+            url: 'https://api.example.com/cart',
+            method: 'POST',
+            data: JSON.stringify({ productId: productId, quantity: 1 }),
+            contentType: 'application/json',
+            success: function (response) {
+                alert('Product added to cart');
+                displayCart(); // Refresh the cart display
+            },
+            error: function (error) {
+                console.error('Error adding to cart:', error);
+            }
+        });
+    }
+}
+
+/*/Old version
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             if (product) {
@@ -118,12 +172,30 @@
                 displayCart();
             }
         }
+/*/
+
+        
 
         //Remove a product from the cart
+        function removeFromCart(productId) {
+    $.ajax({
+        url: `https://api.example.com/cart/${productId}`,
+        method: 'DELETE',
+        success: function (response) {
+            displayCart(); // Refresh the cart display
+        },
+        error: function (error) {
+            console.error('Error removing from cart:', error);
+        }
+        });
+        }
+
+ /*/Old version
         function removeFromCart(productId) {
             cart = cart.filter(item => item.id !== productId);
             displayCart();
         }
+/*/
 
         // Search button click
         $('#search-btn').click(function () {
