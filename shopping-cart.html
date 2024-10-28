@@ -85,7 +85,7 @@
         // Function to display cart items in the table
         function displayCart() {
     $.ajax({
-        url: 'http://localhost:3000/cart',  // Replace with your actual API endpoint
+        url: 'http://localhost:3000/cart',  // Replace actual API endpoint
         method: 'GET',
         success: function (cartItems) {
             const cartItemsContainer = $('#cart-items');
