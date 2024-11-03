@@ -155,7 +155,7 @@ body {
 
 /*/ Search Bar /*/
 .topnav input[type="text"] {
-  width: 50%;
+  width: 35%;
   padding: 10px;
   margin: 10px auto;
   display: block;
