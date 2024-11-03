@@ -224,3 +224,40 @@ $(document).ready(function () {
             email: email,
             age: age,
         }};
+
+/* shipping js */
+$(document).ready(function() {
+    $('#shippingForm').on('submit', function(event) {
+        event.preventDefault();
+        
+        // Validate form
+        if (validateForm()) {
+            const shippingDetails = {
+                address: $('#address').val(),
+                carrier: $('#carrier').val(),
+                method: $('#method').val()
+            };
+            // Convert to JSON and send to Shopping Cart
+            const jsonDetails = JSON.stringify(shippingDetails);
+            console.log(jsonDetails); // For testing
+            // AJAX call to send details
+            $.ajax({
+                url: 'https://api.example.com/shipping',
+                method: 'POST',
+                contentType: 'application/json',
+                data: jsonDetails,
+                success: function(response) {
+                    console.log('Shipping details sent successfully:', response);
+                },
+                error: function(error) {
+                    console.error('Error sending shipping details:', error);
+                }
+            });
+        }
+    });
+
+    function validateForm() {
+        // Simple validation
+        return $('#address').val() && $('#carrier').val() && $('#method').val();
+    }
+});
