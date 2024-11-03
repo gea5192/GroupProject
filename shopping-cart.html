@@ -24,6 +24,7 @@
         <a href="#contact" id="contact-link">Contact</a>
         <a href="#" id="login-signup-link">Login/Signup</a>
         <a href="Products.html">Products</a>
+        <a href="shipping.html">Shipping</a>
         <input type="text" placeholder="Search.." id="search-bar" aria-label="Search">
         <button id="search-btn">Search</button>
     </nav>
@@ -116,31 +117,6 @@
     });
 }
 
-
-/*/Old version
-        function displayCart() {
-            const cartItems = $('#cart-items');
-            cartItems.empty();
-            let total = 0;
-
-            cart.forEach(item => {
-                const row = `
-                    <tr>
-                        <td>${item.name}</td>
-                        <td>${item.description}</td>
-                        <td>$${item.price.toFixed(2)}</td>
-                        <td>${item.quantity}</td>
-                        <td><button class="remove-btn btn btn-danger" data-id="${item.id}">Remove</button></td>
-                    </tr>
-                `;
-                cartItems.append(row);
-                total += item.price * item.quantity;
-            });
-
-            $('#total-amount').text(total.toFixed(2));
-        }
-/*/
-
         // Function to add product to the cart
         function addToCart(productId) {
         const product = products.find(p => p.id === productId);
@@ -160,23 +136,7 @@
         });
     }
 }
-
-/*/Old version
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                const existingItem = cart.find(item => item.id === productId);
-                if (existingItem) {
-                    existingItem.quantity++;
-                } else {
-                    cart.push({ ...product, quantity: 1 });
-                }
-                displayCart();
-            }
-        }
-/*/
-
-        
+  
 
         //Remove a product from the cart
         function removeFromCart(productId) {
@@ -191,13 +151,6 @@
         }
         });
         }
-
- /*/Old version
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            displayCart();
-        }
-/*/
 
         // Search button click
         $('#search-btn').click(function () {
