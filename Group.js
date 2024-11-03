@@ -240,6 +240,7 @@ $(document).ready(function() {
             // Convert to JSON and send to Shopping Cart
             const jsonDetails = JSON.stringify(shippingDetails);
             console.log(jsonDetails); // For testing
+
             // AJAX call to send details
             $.ajax({
                 url: 'https://api.example.com/shipping',
@@ -257,7 +258,22 @@ $(document).ready(function() {
     });
 
     function validateForm() {
-        // Simple validation
         return $('#address').val() && $('#carrier').val() && $('#method').val();
     }
 });
+
+// AngularJS code for shipping handaling
+angular.module('myApp', [])
+.controller('CartController', function($scope, $http) {
+    $scope.shippingDetails = {};
+
+    $scope.submitShipping = function() {
+        $http.post('https://api.example.com/shipping', $scope.shippingDetails)
+            .then(function(response) {
+                console.log('Shipping details submitted:', response.data);
+            }, function(error) {
+                console.error('Error submitting shipping details:', error);
+            });
+    };
+});
+
