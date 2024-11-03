@@ -23,6 +23,7 @@
         <a href="shopping-cart.html">Shopping Cart</a>
         <a href="#contact" id="contact-link">Contact</a>
         <a href="#" id="login-signup-link">Login/Signup</a>
+        <a href="Products.html">Products</a>
         <input type="text" placeholder="Search.." aria-label="Search">
     </nav>
 
@@ -72,6 +73,27 @@
         document.getElementById("back-to-shop").addEventListener("click", function () {
             window.location.href = "group.html";
         });
+
+        document.getElementById("product-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const product = {
+                id: document.getElementById("productId").value,
+                description: document.getElementById("productDescription").value,
+                category: document.getElementById("productCategory").value,
+                uom: document.getElementById("productUOM").value,
+                price: document.getElementById("productPrice").value,
+                weight: document.getElementById("productWeight").value
+            };
+
+            let products = JSON.parse(localStorage.getItem("products")) || [];
+            products.push(product);
+            localStorage.setItem("products", JSON.stringify(products));
+
+            alert("Product added successfully!");
+            document.getElementById("product-form").reset();
+        });
+
 
         document.getElementById('login-signup-link').addEventListener('click', function(){
             showLoginSignupBox();
