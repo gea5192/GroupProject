@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <header class='background'>
+    <header class="background">
         <h1>Nittany Shop</h1>
     </header>
 
@@ -24,8 +24,13 @@
         <a href="#" id="login-signup-link">Login/Signup</a>
         <a href="Products.html">Products</a>
         <a href="shipping.html">Shipping</a>
-        <input type="text" placeholder="Search.." id="search-bar" aria-label="Search">
-        <button id="search-btn">Search</button>
+
+        <div class="input-group ml-auto" style="max-width: 300px;">
+            <input type="text" placeholder="Search..." id="search-bar" class="form-control" aria-label="Search">
+            <div class="input-group-append">
+                <button id="search-btn" class="btn btn-outline-secondary">Search</button>
+            </div>
+        </div>
     </nav>
 
     <main class="container mt-5">
@@ -56,45 +61,49 @@
         <div id="search-results" class="mt-3"></div>
     </main>
 
-
     <footer class="mt-5">
         <p>&copy; 2024 Nittany Shop. All rights reserved.</p>
     </footer>
 
-
     <script src="Group.js" defer></script>
-
     <script>
         $(document).ready(function () {
-            displayCart(); // Load the cart items on page load
+            displayCart();
+
+            $('#login-signup-link').on('click', showLoginSignupBox);
+            $('#contact-link').on('click', function (e) {
+                e.preventDefault();
+                showContactBox();
+            });
+
+            $('#search-btn').click(function () {
+                const searchTerm = $('#search-bar').val().toLowerCase();
+                const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm));
+                displaySearchResults(filteredProducts);
+            });
+
+            $('#checkout-btn').click(function () {
+                alert('Proceeding to checkout...');
+            });
+
+            $('#clear-cart-btn').click(clearCart);
         });
 
-        document.getElementById('login-signup-link').addEventListener('click', function(){
-            showLoginSignupBox();
-        });
-
-        document.getElementById('contact-link').addEventListener('click', function(event) {
-            event.preventDefault();
-            showContactBox(); 
-        });
-
-        var products = [
+        const products = [
             { id: 1, name: "Penn State Crew Neck Sweatshirt", description: "Cozy sweatshirt", price: 47.99 },
             { id: 2, name: "Penn State Stainless Steel Tumbler", description: "Durable tumbler", price: 25.99 },
             { id: 3, name: "Penn State Football Hooded Sweatshirt", description: "PSU Football Hoodie", price: 62.99 }
         ];
 
-        var cart = [];
-
-        // Function to display cart items in the table
         function displayCart() {
             $.ajax({
-                url: 'http://localhost:3000/cart', 
+                url: 'http://localhost:3000/cart',
                 method: 'GET',
                 success: function (cartItems) {
                     const cartItemsContainer = $('#cart-items');
                     cartItemsContainer.empty();
                     let total = 0;
+
                     cartItems.forEach(item => {
                         const row = `
                             <tr>
@@ -118,18 +127,17 @@
             });
         }
 
-        // Function to add product to the cart
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             if (product) {
                 $.ajax({
                     url: 'http://localhost:3000/cart',
                     method: 'POST',
-                    data: JSON.stringify({ productId: productId, quantity: 1 }),
+                    data: JSON.stringify({ productId, quantity: 1 }),
                     contentType: 'application/json',
-                    success: function (response) {
+                    success: function () {
                         alert('Product added to cart');
-                        displayCart(); 
+                        displayCart();
                     },
                     error: function (error) {
                         console.error('Error adding to cart:', error);
@@ -138,27 +146,23 @@
             }
         }
 
-        // Function to remove a product from the cart
         function removeFromCart(productId) {
             $.ajax({
                 url: `http://localhost:3000/cart/${productId}`,
                 method: 'DELETE',
-                success: function (response) {
-                    displayCart();
-                },
+                success: displayCart,
                 error: function (error) {
                     console.error('Error removing from cart:', error);
                 }
             });
         }
 
-        // Function to clear the entire cart
         function clearCart() {
             $.ajax({
                 url: 'http://localhost:3000/cart',
                 method: 'DELETE',
                 success: function () {
-                    displayCart(); 
+                    displayCart();
                     alert('Cart cleared');
                 },
                 error: function (error) {
@@ -166,12 +170,6 @@
                 }
             });
         }
-
-        $('#search-btn').click(function () {
-            const searchTerm = $('#search-bar').val().toLowerCase();
-            const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm));
-            displaySearchResults(filteredProducts);
-        });
 
         function displaySearchResults(filteredProducts) {
             const searchResults = $('#search-results');
@@ -203,14 +201,6 @@
         $(document).on('click', '.remove-btn', function () {
             const productId = parseInt($(this).data('id'));
             removeFromCart(productId);
-        });
-
-        $('#checkout-btn').click(function () {
-            alert('Proceeding to checkout...');
-        });
-
-        $('#clear-cart-btn').click(function () {
-            clearCart();
         });
     </script>
 </body>
