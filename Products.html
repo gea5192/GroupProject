@@ -52,6 +52,7 @@
                         <p>UOM: ${product.uom}</p>
                         <p>Price: $${product.price}</p>
                         <p>Weight: ${product.weight ? product.weight + ' lbs' : 'N/A'}</p>
+                        <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
                     `;
                     productList.appendChild(productItem);
                 });
