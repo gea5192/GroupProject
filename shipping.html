@@ -37,22 +37,18 @@
                 <label for="carrier">Shipping Carrier:</label>
                 <select class="form-control" id="carrier" required>
                     <option value="">Select Carrier</option>
-                    <option value="FedEx">FedEx</option>
-                    <option value="UPS">UPS</option>
-                    <option value="DHL">DHL</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="method">Shipping Method:</label>
                 <select class="form-control" id="method" required>
                     <option value="">Select Method</option>
-                    <option value="Standard">Standard</option>
-                    <option value="Express">Express</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="Group.js"></script>
     <script>
@@ -66,6 +62,7 @@
         });
 
         function loadShippingOptions() {
+            // Load carriers from JSON or fall back to default options
             $.getJSON('carriers.json', function (data) {
                 let carrierOptions = '<option value="">Select Carrier</option>';
                 data.carriers.forEach(carrier => {
@@ -73,9 +70,16 @@
                 });
                 $('#carrier').html(carrierOptions);
             }).fail(function () {
-                alert('Error loading carriers.');
+                console.warn('Could not load carriers.json. Falling back to default options.');
+                const defaultCarriers = ['FedEx', 'UPS', 'DHL'];
+                let carrierOptions = '<option value="">Select Carrier</option>';
+                defaultCarriers.forEach(carrier => {
+                    carrierOptions += `<option value="${carrier}">${carrier}</option>`;
+                });
+                $('#carrier').html(carrierOptions);
             });
 
+            // Load methods from JSON or fall back to default options
             $.getJSON('methods.json', function (data) {
                 let methodOptions = '<option value="">Select Method</option>';
                 data.methods.forEach(method => {
@@ -83,7 +87,13 @@
                 });
                 $('#method').html(methodOptions);
             }).fail(function () {
-                alert('Error loading methods.');
+                console.warn('Could not load methods.json. Falling back to default options.');
+                const defaultMethods = ['Standard', 'Express'];
+                let methodOptions = '<option value="">Select Method</option>';
+                defaultMethods.forEach(method => {
+                    methodOptions += `<option value="${method}">${method}</option>`;
+                });
+                $('#method').html(methodOptions);
             });
         }
 
@@ -94,7 +104,6 @@
                 method: $('#method').val()
             };
 
-            // Send data as JSON
             $.ajax({
                 url: 'http://localhost:3000/saveShipping',
                 method: 'POST',
@@ -103,8 +112,9 @@
                 success: function () {
                     alert('Shipping information saved successfully.');
                 },
-                error: function () {
-                    alert('Error saving shipping information.');
+                error: function (xhr, status, error) {
+                    console.error('Error saving shipping information:', error);
+                    alert('Error saving shipping information. Please try again.');
                 }
             });
         }
