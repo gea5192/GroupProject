@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="Group.css">
 </head>
+
 <body>
     <header class='background'>
         <h1>Shipping</h1>
@@ -53,5 +55,60 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="Group.js"></script>
+    <script>
+        $(document).ready(function () {
+            loadShippingOptions();
+
+            $('#shippingForm').on('submit', function (e) {
+                e.preventDefault();
+                saveShippingData();
+            });
+        });
+
+        function loadShippingOptions() {
+            $.getJSON('carriers.json', function (data) {
+                let carrierOptions = '<option value="">Select Carrier</option>';
+                data.carriers.forEach(carrier => {
+                    carrierOptions += `<option value="${carrier}">${carrier}</option>`;
+                });
+                $('#carrier').html(carrierOptions);
+            }).fail(function () {
+                alert('Error loading carriers.');
+            });
+
+            $.getJSON('methods.json', function (data) {
+                let methodOptions = '<option value="">Select Method</option>';
+                data.methods.forEach(method => {
+                    methodOptions += `<option value="${method}">${method}</option>`;
+                });
+                $('#method').html(methodOptions);
+            }).fail(function () {
+                alert('Error loading methods.');
+            });
+        }
+
+        function saveShippingData() {
+            const shippingData = {
+                address: $('#address').val(),
+                carrier: $('#carrier').val(),
+                method: $('#method').val()
+            };
+
+            // Send data as JSON
+            $.ajax({
+                url: 'http://localhost:3000/saveShipping',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(shippingData),
+                success: function () {
+                    alert('Shipping information saved successfully.');
+                },
+                error: function () {
+                    alert('Error saving shipping information.');
+                }
+            });
+        }
+    </script>
 </body>
+
 </html>
