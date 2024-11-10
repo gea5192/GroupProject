@@ -394,3 +394,23 @@ footer p {
 .add-to-cart:hover {
   background-color: #0056b3; 
 }
+
+/* billing & return */
+.form-label{
+  font-weight: bold;
+
+}
+
+button {
+  width: 100%;
+}
+
+.container{
+  max-width: 800px;
+}
+
+#productList li{
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd
+}
