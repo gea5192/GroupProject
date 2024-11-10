@@ -277,3 +277,58 @@ angular.module('myApp', [])
     };
 });
 
+/* billing */
+// billing form
+$('#billing-form').on('submit', function(event){
+    event.preventDefault();
+
+    let billingData = {
+        name: $('#name').val(),
+        address: $('#address').val(),
+        city: $('#city').val(),
+        postal: $('#postal').val()
+    };
+
+    console.log('Billing Details: ', billingData);
+});
+
+//product searching
+$('#searchBtn').on('click', function() {
+    let query = $('#searchProduct').val();
+    if(query) {
+        $.ajax({
+            url: '/api/products/search', // A mock API endpoint to fetch products
+            method: 'GET',
+            data: { query: query },
+            success: function(data) {
+                let productList = $('#productList');
+                productList.empty();
+                data.products.forEach(function(product) {
+                    productList.append(`<li class="list-group-item">${product.name} - ${product.price}</li>`);
+                });
+            }
+        });
+    }
+});
+
+//returns
+$('#submitReturns').on('click', function() {
+    let returnData = {
+        shopperId: 123, // Assume some shopper ID
+        returnProducts: [] // This should be dynamically populated based on product selection
+    };
+
+    // Example: Send to Node.js backend using AJAX
+    $.ajax({
+        url: '/api/returns', 
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(returnData),
+        success: function(response) {
+            alert('Return request submitted!');
+        },
+        error: function() {
+            alert('An error occurred while submitting the return request.');
+        }
+    });
+});
