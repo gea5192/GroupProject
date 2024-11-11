@@ -26,23 +26,28 @@
         <input type="text" placeholder="Search.." aria-label="Search">
     </nav>
 
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <input type="text" ng-model="searchQuery" class="form-control" placeholder="Search Products to Return">
+    <div class="container mt-4">
+        <!-- Product Search Section -->
+        <div class="row mb-3">
+            <div class="col-md-8">
+                <input type="text" ng-model="searchQuery" class="form-control" placeholder="Search Products to Return">
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-secondary" ng-click="searchProducts()">Search</button>
+            </div>
         </div>
-        <div class="col-md-6">
-            <button class="btn btn-secondary" ng-click="searchProducts()">Search</button>
+
+        <!-- Product List Section -->
+        <ul class="list-group">
+            <li ng-repeat="product in searchResults" class="list-group-item">
+                <input type="checkbox" ng-model="product.selected"> {{product.name}}
+            </li>
+        </ul>
+
+        <!-- Return Request Section -->
+        <div class="mt-4">
+            <button class="btn btn-danger" ng-click="submitReturnRequest()">Submit Return Request</button>
         </div>
-    </div>
-
-    <ul class="list-group mt-4">
-        <li ng-repeat="product in searchResults" class="list-group-item">
-            <input type="checkbox" ng-model="product.selected"> {{product.name}}
-        </li>
-    </ul>
-
-    <div class="mt-5">
-        <button class="btn btn-danger" ng-click="submitReturnRequest()">Submit Return Request</button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -74,17 +79,22 @@
                 const returnData = selectedProducts.map(product => ({ productId: product.id, name: product.name }));
 
                 // AJAX POST request to backend
-                $http.post('/submit-return', returnData)
-                    .then(function(response) {
-                        alert('Return request submitted successfully!');
-                        console.log('Server response:', response.data);
-                    })
-                    .catch(function(error) {
-                        alert('Error submitting return request.');
-                        console.error('Submission error:', error);
-                    });
+                if (returnData.length > 0) {
+                    $http.post('/submit-return', returnData)
+                        .then(function(response) {
+                            alert('Return request submitted successfully!');
+                            console.log('Server response:', response.data);
+                        })
+                        .catch(function(error) {
+                            alert('Error submitting return request.');
+                            console.error('Submission error:', error);
+                        });
+                } else {
+                    alert('Please select at least one product to return.');
+                }
             };
         }]);
     </script>
 </body>
 </html>
+
