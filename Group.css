@@ -414,3 +414,59 @@ button {
   padding: 10px;
   border: 1px solid #ddd
 }
+
+/* Form Styling for the Billing Page */
+#billing-form {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f7f9fc;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+ }
+ 
+ 
+ #billing-form label {
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+  color: #333;
+ }
+ 
+ 
+ #billing-form .form-control {
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+ }
+ 
+ 
+ #billing-form .form-control:focus {
+  border-color: #537692;
+  box-shadow: 0 0 5px rgba(83, 118, 146, 0.5);
+ }
+ 
+ 
+ 
+ 
+ /* Cleaned up submit button */
+ #billing-form button[type="submit"] {
+  background-color: #3789bf;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+ }
+ 
+ 
+ #billing-form button[type="submit"]:hover {
+  background-color: #007bff;
+ }
+ 
