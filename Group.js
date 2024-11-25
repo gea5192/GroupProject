@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     var products = [
         { id: 1, name: "Penn State Crew Neck Sweatshirt", description: "Cozy sweatshirt", category: "Clothing", uom: "Piece", price: 47.99, weight: 1.2 },
@@ -331,4 +332,175 @@ $('#submitReturns').on('click', function() {
             alert('An error occurred while submitting the return request.');
         }
     });
+});
+// Import required modules
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+require('dotenv').config();
+
+// Create Express app
+const app = express();
+const port = 3000;
+
+// Middleware for parsing JSON
+app.use(bodyParser.json());
+
+// MongoDB connection string
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/storefront'; // Default to local MongoDB if no .env file
+
+// Connect to MongoDB
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => console.log('Error connecting to MongoDB:', err));
+
+// -------------------- Models --------------------
+
+// Shopper Schema
+const shopperSchema = new mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  email: { type: String, unique: true },
+  password: String, // Remember to hash passwords before storing in production
+  createdAt: { type: Date, default: Date.now }
+});
+const Shopper = mongoose.model('Shopper', shopperSchema);
+
+// Product Schema
+const productSchema = new mongoose.Schema({
+  name: String,
+  description: String,
+  price: Number,
+  stock: Number,
+  imageUrl: String,
+  category: String,
+  createdAt: { type: Date, default: Date.now }
+});
+const Product = mongoose.model('Product', productSchema);
+
+// Shopping Cart Schema
+const shoppingCartSchema = new mongoose.Schema({
+  shopperId: { type: mongoose.Schema.Types.ObjectId, ref: 'Shopper' },
+  items: [{
+    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+    quantity: Number
+  }],
+  totalPrice: Number,
+  createdAt: { type: Date, default: Date.now }
+});
+const ShoppingCart = mongoose.model('ShoppingCart', shoppingCartSchema);
+
+// Shipping and Billing Schema
+const shippingBillingSchema = new mongoose.Schema({
+  shopperId: { type: mongoose.Schema.Types.ObjectId, ref: 'Shopper' },
+  address: String,
+  city: String,
+  state: String,
+  postalCode: String,
+  country: String,
+  shippingMethod: String,
+  billingMethod: String,
+  createdAt: { type: Date, default: Date.now }
+});
+const ShippingBilling = mongoose.model('ShippingBilling', shippingBillingSchema);
+
+// Returns Schema
+const returnSchema = new mongoose.Schema({
+  shopperId: { type: mongoose.Schema.Types.ObjectId, ref: 'Shopper' },
+  productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+  returnReason: String,
+  status: { type: String, default: 'Pending' },
+  createdAt: { type: Date, default: Date.now }
+});
+const Return = mongoose.model('Return', returnSchema);
+
+// -------------------- Routes --------------------
+
+// Shopper Routes
+app.post('/api/shopper/register', async (req, res) => {
+  try {
+    const newShopper = new Shopper(req.body);
+    await newShopper.save();
+    res.status(201).send('Shopper registered successfully');
+  } catch (err) {
+    res.status(400).send('Error registering shopper');
+  }
+});
+
+// Product Routes
+app.get('/api/products', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
+    res.status(500).send('Error fetching products');
+  }
+});
+
+// Shopping Cart Routes
+app.post('/api/shopping-cart/add', async (req, res) => {
+  try {
+    const { shopperId, productId, quantity } = req.body;
+    const cart = await ShoppingCart.findOne({ shopperId });
+    if (cart) {
+      const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
+      if (itemIndex > -1) {
+        cart.items[itemIndex].quantity += quantity;
+      } else {
+        cart.items.push({ productId, quantity });
+      }
+      await cart.save();
+    } else {
+      const newCart = new ShoppingCart({
+        shopperId,
+        items: [{ productId, quantity }],
+        totalPrice: 0
+      });
+      await newCart.save();
+    }
+    res.status(200).send('Item added to cart');
+  } catch (err) {
+    res.status(500).send('Error adding item to cart');
+  }
+});
+
+// Shipping and Billing Routes
+app.post('/api/shipping-billing', async (req, res) => {
+  try {
+    const { shopperId, address, city, state, postalCode, country, shippingMethod, billingMethod } = req.body;
+    const newShippingBilling = new ShippingBilling({
+      shopperId,
+      address,
+      city,
+      state,
+      postalCode,
+      country,
+      shippingMethod,
+      billingMethod
+    });
+    await newShippingBilling.save();
+    res.status(200).send('Shipping and Billing info saved');
+  } catch (err) {
+    res.status(500).send('Error saving shipping and billing info');
+  }
+});
+
+// Return Routes
+app.post('/api/returns', async (req, res) => {
+  try {
+    const { shopperId, productId, returnReason } = req.body;
+    const newReturn = new Return({
+      shopperId,
+      productId,
+      returnReason
+    });
+    await newReturn.save();
+    res.status(200).send('Return request submitted');
+  } catch (err) {
+    res.status(500).send('Error submitting return');
+  }
+});
+// -------------------- Start Server --------------------
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
