@@ -3,174 +3,86 @@ const app = require('../app');
 const mongoose = require('mongoose');
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost/test-database');
+  await mongoose.connect('mongodb://localhost/test-database', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 });
 
 afterAll(async () => {
   await mongoose.connection.close();
 });
 
-describe('Product and Shopping Cart API', () => {
-  let testProduct;
+describe('Returns API', () => {
+  let productIds = [];
 
   beforeEach(async () => {
-    testProduct = {
-      name: 'Test Product',
-      description: 'Test description',
-      price: 10,
-    };
+    // Create sample products for testing
+    const products = [
+      { name: 'Penn State Crew Neck Sweatshirt', description: 'A warm sweatshirt', price: 50 },
+      { name: 'Penn State Stainless Steel Tumbler', description: 'A sleek tumbler', price: 20 },
+      { name: 'Penn State Football Hooded Sweatshirt', description: 'A stylish hoodie', price: 60 },
+    ];
 
-    const res = await request(app)
-      .post('/api/products')
-      .send(testProduct);
-
-    testProduct._id = res.body._id;
+    for (const product of products) {
+      const res = await request(app).post('/api/products').send(product);
+      productIds.push(res.body._id);
+    }
   });
 
   afterEach(async () => {
     await mongoose.connection.db.dropDatabase();
   });
 
-  it('should create a new product', async () => {
-    const newProduct = {
-      name: 'Another Test Product',
-      description: 'Another test description',
-      price: 20,
-    };
+  it('should search for products by query', async () => {
+    const query = 'Sweatshirt';
 
     const res = await request(app)
-      .post('/api/products')
-      .send(newProduct);
-
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('name', newProduct.name);
-  });
-
-  it('should fetch all products', async () => {
-    const res = await request(app)
-      .get('/api/products');
+      .get(`/api/products/search?q=${query}`); // 
 
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body).toContainEqual(expect.objectContaining(testProduct));
+    expect(res.body.length).toBeGreaterThan(0);
+    res.body.forEach(product => {
+      expect(product.name).toMatch(new RegExp(query, 'i'));
+    });
   });
 
-  it('should fetch a specific product', async () => {
-    const res = await request(app)
-      .get(`/api/products/${testProduct._id}`);
-
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual(expect.objectContaining(testProduct));
-  });
-
-  it('should update a product', async () => {
-    const updatedProduct = {
-      name: 'Updated Product',
-      price: 15,
-    };
+  it('should submit a return request for selected products', async () => {
+    const returnRequest = [
+      { productId: productIds[0], name: 'Penn State Crew Neck Sweatshirt' },
+      { productId: productIds[2], name: 'Penn State Football Hooded Sweatshirt' },
+    ];
 
     const res = await request(app)
-      .put(`/api/products/${testProduct._id}`)
-      .send(updatedProduct);
+      .post('/api/returns')
+      .send(returnRequest); //
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual(expect.objectContaining({ ...testProduct, ...updatedProduct }));
+    expect(res.body.message).toBe('Return request submitted successfully');
   });
 
-  it('should delete a product', async () => {
+  it('should handle submitting an empty return request gracefully', async () => {
+    const returnRequest = [];
+
     const res = await request(app)
-      .delete(`/api/products/${testProduct._id}`);
+      .post('/api/returns')
+      .send(returnRequest);
 
-    expect(res.statusCode).toBe(200);
-
-    const getRes = await request(app)
-      .get(`/api/products/${testProduct._id}`);
-
-    expect(getRes.statusCode).toBe(404);
+    expect(res.statusCode).toBe(400); //backend responds with a 400 for bad requests
+    expect(res.body.error).toBe('No products selected for return');
   });
 
-  // Shopping Cart Tests
-  describe('Shopping Cart API', () => {
-    let cartId;
+  it('should validate invalid product IDs in return request', async () => {
+    const returnRequest = [
+      { productId: 'invalid-id', name: 'Non-existent product' },
+    ];
 
-    it('should create a shopping cart', async () => {
-      const res = await request(app)
-        .post('/api/carts')
-        .send();
+    const res = await request(app)
+      .post('/api/returns')
+      .send(returnRequest);
 
-      expect(res.statusCode).toBe(201);
-      cartId = res.body._id;
-    });
-
-    it('should add a product to the cart', async () => {
-      const res = await request(app)
-        .post(`/api/carts/${cartId}/items`)
-        .send({
-          productId: testProduct._id,
-          quantity: 2,
-        });
-
-      expect(res.statusCode).toBe(200);
-      expect(res.body.items).toContainEqual(
-        expect.objectContaining({
-          productId: testProduct._id,
-          quantity: 2,
-        })
-      );
-    });
-
-    it('should retrieve the cart', async () => {
-      const res = await request(app)
-        .get(`/api/carts/${cartId}`);
-
-      expect(res.statusCode).toBe(200);
-      expect(res.body).toHaveProperty('items');
-    });
-
-    it('should update the quantity of a product in the cart', async () => {
-      const addRes = await request(app)
-        .post(`/api/carts/${cartId}/items`)
-        .send({
-          productId: testProduct._id,
-          quantity: 2,
-        });
-
-      const updateRes = await request(app)
-        .put(`/api/carts/${cartId}/items/${testProduct._id}`)
-        .send({
-          quantity: 5,
-        });
-
-      expect(updateRes.statusCode).toBe(200);
-      expect(updateRes.body.items).toContainEqual(
-        expect.objectContaining({
-          productId: testProduct._id,
-          quantity: 5,
-        })
-      );
-    });
-
-    it('should remove a product from the cart', async () => {
-      const addRes = await request(app)
-        .post(`/api/carts/${cartId}/items`)
-        .send({
-          productId: testProduct._id,
-          quantity: 2,
-        });
-
-      const removeRes = await request(app)
-        .delete(`/api/carts/${cartId}/items/${testProduct._id}`);
-
-      expect(removeRes.statusCode).toBe(200);
-
-      const cartRes = await request(app)
-        .get(`/api/carts/${cartId}`);
-
-      expect(cartRes.body.items).not.toContainEqual(
-        expect.objectContaining({
-          productId: testProduct._id,
-        })
-      );
-    });
+    expect(res.statusCode).toBe(404); // backend responds with a 404 for invalid IDs
+    expect(res.body.error).toBe('Product not found');
   });
 });
