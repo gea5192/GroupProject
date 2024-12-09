@@ -1,0 +1,11 @@
+Test ID,Test Date,Tester,Area Tested ,Test Actions(s) preformed,Results,Comments,Bug Fixed on Date
+1,12/8/24,jane doe,Shopper ,Verify that the shopper can create an accouont using a valid email and password,Pass ,Account created ,
+2,12/7/24,jogn doe,Shopper ,Verify that ta shopper cannot create an account with an invalid email ,Pass ,Error message when tried ,
+3,12/8/24,jogn doe,Product ,Verify that products are displayed correctly on the product page ,Pass ,Products displayed ,
+4,12/8/24,jane doe,Product,Verify that search functionality works by filtering produts based on category ,fail ,does not filter ,
+5,12/8/24,jane doe,Shopping cart ,verify that item can be added to cart ,Fail ,"button works, does not transfer ",
+6,12/8/24,john doe,Shopping cart ,"Verify that the cart is cleared when ""clear cart"" is clicke ",Fail ,not working ,
+7,12/8/12,jane doe,SHopping Cart ,Verify that a user can checkout with ,Fail ,Shopper cart not working ,
+8,12/8/12,john doe,SHopping Cart ,Verify that a user can checkout with items in the cart ,Fail ,checkout button not working ,
+9,12/8/24,jane doe,Returns ,Verify that a shopper can seatch for products to return ,Pass ,products are returned ,
+10,12/8/24,jane doe,Returns ,Verify that Selected Products can be submittef for return ,Pass ,return is submitted ,
