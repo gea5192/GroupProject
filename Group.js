@@ -504,3 +504,132 @@ app.post('/api/returns', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+// lesson 12
+// Required modules
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+// Create an instance of Express app
+const app = express();
+const PORT = 3000;
+
+// Middleware setup
+app.use(bodyParser.json());
+app.use(cors()); // Enable CORS for all origins
+
+// MongoDB Connection
+mongoose.connect('mongodb://localhost:27017/nittanyshop', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('MongoDB connected');
+}).catch(err => {
+    console.error('Error connecting to MongoDB:', err);
+});
+
+// Define MongoDB Schemas
+const ShopperSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    age: Number,
+    address: String,
+    phone: String,
+    password: String
+});
+
+const CartItemSchema = new mongoose.Schema({
+    productId: Number,
+    quantity: { type: Number, default: 1 },
+    name: String,
+    description: String,
+    price: Number
+});
+
+const ReturnRequestSchema = new mongoose.Schema({
+    productId: Number,
+    name: String,
+    reason: String,
+    dateRequested: { type: Date, default: Date.now }
+});
+
+// Create models for MongoDB collections
+const Shopper = mongoose.model('Shopper', ShopperSchema);
+const CartItem = mongoose.model('CartItem', CartItemSchema);
+const ReturnRequest = mongoose.model('ReturnRequest', ReturnRequestSchema);
+
+// Routes for Shopper (Login/Signup)
+app.post('/api/signup', (req, res) => {
+    const { name, email, age, address, phone, password } = req.body;
+    const newShopper = new Shopper({ name, email, age, address, phone, password });
+    
+    newShopper.save()
+        .then(shopper => res.status(201).json(shopper))
+        .catch(err => res.status(500).json({ error: 'Error saving shopper data', message: err }));
+});
+
+app.post('/api/login', (req, res) => {
+    const { email, password } = req.body;
+    
+    Shopper.findOne({ email, password })
+        .then(shopper => {
+            if (shopper) {
+                res.status(200).json(shopper);
+            } else {
+                res.status(401).json({ error: 'Invalid credentials' });
+            }
+        })
+        .catch(err => res.status(500).json({ error: 'Error during login', message: err }));
+});
+
+// Routes for Shopping Cart
+app.get('/api/cart', (req, res) => {
+    CartItem.find()
+        .then(cartItems => res.json(cartItems))
+        .catch(err => res.status(500).json({ error: 'Error fetching cart items', message: err }));
+});
+
+app.post('/api/cart', (req, res) => {
+    const { productId, quantity, name, description, price } = req.body;
+    const newCartItem = new CartItem({ productId, quantity, name, description, price });
+    
+    newCartItem.save()
+        .then(item => res.status(201).json(item))
+        .catch(err => res.status(500).json({ error: 'Error adding item to cart', message: err }));
+});
+
+app.delete('/api/cart/:id', (req, res) => {
+    CartItem.findByIdAndDelete(req.params.id)
+        .then(() => res.status(200).json({ message: 'Item removed from cart' }))
+        .catch(err => res.status(500).json({ error: 'Error removing item from cart', message: err }));
+});
+
+app.delete('/api/cart', (req, res) => {
+    CartItem.deleteMany({})
+        .then(() => res.status(200).json({ message: 'Cart cleared' }))
+        .catch(err => res.status(500).json({ error: 'Error clearing cart', message: err }));
+});
+
+// Routes for Return Requests
+app.post('/api/returns', (req, res) => {
+    const { productId, name, reason } = req.body;
+    const newReturnRequest = new ReturnRequest({ productId, name, reason });
+    
+    newReturnRequest.save()
+        .then(request => res.status(201).json(request))
+        .catch(err => res.status(500).json({ error: 'Error submitting return request', message: err }));
+});
+
+app.get('/api/returns', (req, res) => {
+    ReturnRequest.find()
+        .then(returnRequests => res.json(returnRequests))
+        .catch(err => res.status(500).json({ error: 'Error fetching return requests', message: err }));
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
+
+
